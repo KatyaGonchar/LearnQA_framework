@@ -6,25 +6,11 @@ import string
 from lib.base_case import BaseCase
 from lib.assertions import Assertions
 
-from datetime import datetime
-
 class TestUserRegister(BaseCase):
     ex_params = [{'password'}, {'username'}, {'firstName'}, {'lastName'}, {'email'} ]
 
-    def setup(self):
-        basepart = 'learnqa'
-        domain = "example.com"
-        random_part = datetime.now().strftime("%m%d%Y%H%M%S")
-        self.email = f"{basepart}{random_part}@{domain}"
-
     def test_create_user_succesfully(self):
-        data = {
-            'password': '123',
-            'username': 'learnqa',
-            'firstName': 'learnqa',
-            'lastName': 'learnqa',
-            'email': self.email
-        }
+        data = self.prepare_registration_data()
 
         response = requests.post('https://playground.learnqa.ru/api/user/', data=data)
 
@@ -33,13 +19,7 @@ class TestUserRegister(BaseCase):
 
     def test_create_user_with_existing_email(self):
         email = 'vinkotov@example.com'
-        data = {
-            'password': '123',
-            'username': 'learnqa',
-            'firstName': 'learnqa',
-            'lastName': 'learnqa',
-            'email': email
-        }
+        data = self.prepare_registration_data(email)
 
         response = requests.post('https://playground.learnqa.ru/api/user/', data=data)
 
@@ -48,13 +28,7 @@ class TestUserRegister(BaseCase):
 
     def test_user_register_with_incorrect_email(self):
         email = 'vinkotovexample.com'
-        data = {
-            'password': '123',
-            'username': 'learnqa',
-            'firstName': 'learnqa',
-            'lastName': 'learnqa',
-            'email': email
-        }
+        data = self.prepare_registration_data(email)
 
         response = requests.post('https://playground.learnqa.ru/api/user/', data=data)
 
@@ -63,13 +37,7 @@ class TestUserRegister(BaseCase):
 
     def test_user_register_with_short_name(self):
         email = 'test@example.com'
-        data = {
-            'password': '123',
-            'username': 'a',
-            'firstName': 'learnqa',
-            'lastName': 'learnqa',
-            'email': email
-        }
+        data = self.prepare_registration_data(email)
 
         response = requests.post('https://playground.learnqa.ru/api/user/', data=data)
 
@@ -93,13 +61,7 @@ class TestUserRegister(BaseCase):
 
     @pytest.mark.parametrize('conditions', ex_params)
     def test_user_without_required_field(self, conditions):
-        data = {
-            'password': '123',
-            'username': 'learnqa',
-            'firstName': 'learnqa',
-            'lastName': 'learnqa',
-            'email': 'test@example.com'
-        }
+        data = self.prepare_registration_data()
 
         for condition in conditions:
            del data[condition]
