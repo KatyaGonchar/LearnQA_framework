@@ -1,9 +1,13 @@
 import requests
+import allure
 
 from lib.base_case import BaseCase
 from lib.assertions import Assertions
 
 class TestUserEdit(BaseCase):
+
+    @allure.story('test_edit_just_creative_user')
+    @allure.severity(allure.severity_level.TRIVIAL)
     def test_edit_just_creative_user(self):
         #Register
         register_data = self.prepare_registration_data()
@@ -52,6 +56,8 @@ class TestUserEdit(BaseCase):
             "Wrong name of user after edit"
         )
 
+    @allure.story('test_user_edit_without_login')
+    @allure.severity(allure.severity_level.TRIVIAL)
     def test_user_edit_without_login(self):
         # Register
         register_data = self.prepare_registration_data()
@@ -73,6 +79,8 @@ class TestUserEdit(BaseCase):
 
         Assertions.assert_code_status(response3, 400)
 
+    @allure.story('test_user_edit_under_other_user')
+    @allure.severity(allure.severity_level.TRIVIAL)
     def test_user_edit_under_other_user(self):
         # Register
         register_data = self.prepare_registration_data()
@@ -107,6 +115,8 @@ class TestUserEdit(BaseCase):
 
         Assertions.assert_code_status(response3, 400)
 
+    @allure.story('test_user_update_with_short_name')
+    @allure.severity(allure.severity_level.TRIVIAL)
     def test_user_update_with_short_name(self):
         # Register
         register_data = self.prepare_registration_data()

@@ -1,10 +1,14 @@
 import requests
+import allure
 
 from lib.base_case import BaseCase
 from lib.assertions import Assertions
 
 
 class TestUserGet(BaseCase):
+
+    @allure.story('test_get_user_details_not_auth')
+    @allure.severity(allure.severity_level.TRIVIAL)
     def test_get_user_details_not_auth(self):
         response = requests.get("https://playground.learnqa.ru/api/user/2")
 
@@ -13,6 +17,8 @@ class TestUserGet(BaseCase):
         Assertions.assert_json_has_not_key(response, "firstName")
         Assertions.assert_json_has_not_key(response, "lastName")
 
+    @allure.story('test_get_user_details_auth_as_same_user')
+    @allure.severity(allure.severity_level.TRIVIAL)
     def test_get_user_details_auth_as_same_user(self):
         data = {
             'email': 'vinkotov@example.com',
@@ -31,6 +37,8 @@ class TestUserGet(BaseCase):
         expected_fields = ["username", "email", "firstName", "lastName"]
         Assertions.assert_json_has_keys(response2, expected_fields)
 
+    @allure.story('test_get_user_details_auth_as_other_user')
+    @allure.severity(allure.severity_level.TRIVIAL)
     def test_get_user_details_auth_as_other_user(self):
         data = {
             'email': 'vinkotov@example.com',

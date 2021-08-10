@@ -1,5 +1,6 @@
 import pytest
 import requests
+import allure
 
 from lib.base_case import BaseCase
 from lib.assertions import Assertions
@@ -22,6 +23,8 @@ class TestUserAuth(BaseCase):
         self.user_id_from_auth_method = self.get_json_value(response1, "user_id")
         self.auth_sid = self.get_cookie(response1, "auth_sid")
 
+    @allure.story('Test User Auth')
+    @allure.severity(allure.severity_level.CRITICAL)
     def test_auth_user(self):
         response2 = requests.get('https://playground.learnqa.ru/api/user/auth',
                                  headers={"x-csrf-token" : self.token},
@@ -35,6 +38,8 @@ class TestUserAuth(BaseCase):
         )
 
     @pytest.mark.parametrize('condition', exclude_params)
+    @allure.story('Test user Negative check')
+    @allure.severity(allure.severity_level.CRITICAL)
     def test_negative_auth_check(self, condition):
 
         if condition == "no_cookie":

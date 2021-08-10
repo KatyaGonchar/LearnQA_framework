@@ -1,10 +1,13 @@
 import requests
+import allure
 
 from lib.base_case import BaseCase
 from lib.assertions import Assertions
 
 class TestUserDelete(BaseCase):
 
+    @allure.story('Test Delete super user')
+    @allure.severity(allure.severity_level.TRIVIAL)
     def test_delete_super_user(self):
         data = {
             'email': 'vinkotov@example.com',
@@ -21,6 +24,8 @@ class TestUserDelete(BaseCase):
         Assertions.assert_code_status(response2, 400)
         assert response2.content.decode("utf-8") == "Auth token not supplied", f"Unexpected response content"
 
+    @allure.story('Test Delete register user')
+    @allure.severity(allure.severity_level.NORMAL)
     def test_user_delete_on_registered_user(self):
         # Register
         register_data = self.prepare_registration_data()
@@ -63,6 +68,8 @@ class TestUserDelete(BaseCase):
 
         Assertions.assert_code_status(response4, 404)
 
+    @allure.story('Test Delete on other user')
+    @allure.severity(allure.severity_level.NORMAL)
     def test_delete_user_under_other_user(self):
         # Register
         register_data = self.prepare_registration_data()
